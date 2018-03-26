@@ -96,8 +96,17 @@ module.exports = function(grunt) {
           }
 
           grunt.log.ok(`Uploaded: ${file.metadata.name}`);
-
-          callback();
+          if (options.access !== 'private') {
+            file.makePublic(err => {
+              if (err) {
+                grunt.fail.warn(err);
+              }
+              callback();
+            })
+          } else {
+            callback();
+          }
+          
         });
 
       });
